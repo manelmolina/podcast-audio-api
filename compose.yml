@@ -1,0 +1,19 @@
+services:
+  podcast-audio:
+    image: molinaig/podcast-audio-api:latest
+    platform: linux/amd64
+    container_name: podcast-audio-api
+    restart: unless-stopped
+    pull_policy: always
+    ports:
+      - "8080:8080"
+    environment:
+      API_KEY: "${API_KEY:?Define API_KEY en el archivo .env}"
+      MAX_UPLOAD_MB: "2048"
+      JOB_TTL_HOURS: "24"
+      FFMPEG_TIMEOUT_SECONDS: "14400"
+      LOUDNESS_I: "-16"
+    volumes:
+      - ./intro.mp3:/data/intro.mp3:ro
+    mem_limit: 768m
+    cpus: 1.5

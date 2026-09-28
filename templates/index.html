@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Unir audios | Podcast Audio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+  <main class="container">
+    <header class="page-header">
+      <p class="eyebrow">Podcast Audio</p>
+      <h1>Crea el audio final</h1>
+      <p>Elige una operación, selecciona los archivos y el resultado se descargará automáticamente.</p>
+      <p class="processing-note">
+        Los WAV de 48 kHz reciben reducción de ruido con
+        <a href="https://github.com/rikorose/deepfilternet" target="_blank" rel="noopener noreferrer">DeepFilterNet</a>.
+        Todos los audios se igualan a una sonoridad de {{ loudness_i }} LUFS.
+      </p>
+    </header>
+
+    <article class="audio-panel">
+      <nav class="tabs" aria-label="Operación de audio">
+        <button type="button" class="tab active" role="tab" aria-selected="true"
+                aria-controls="panel-intro-audio" data-panel="panel-intro-audio">
+          Intro + audio
+        </button>
+        <button type="button" class="tab" role="tab" aria-selected="false"
+                aria-controls="panel-three-audios" data-panel="panel-three-audios">
+          Audio 1 + intro + audio 2
+        </button>
+      </nav>
+
+      <section id="panel-intro-audio" class="tab-panel" role="tabpanel">
+        <h2>Intro + audio</h2>
+        <p>La intro configurada se añadirá al principio del archivo que selecciones.</p>
+        <form class="merge-form" action="/merge-two" method="post" enctype="multipart/form-data">
+          <label for="audio">Audio</label>
+          <input id="audio" name="audio" type="file" accept="audio/*,.mp4" required>
+          <button type="submit">Unir y descargar</button>
+        </form>
+      </section>
+
+      <section id="panel-three-audios" class="tab-panel" role="tabpanel" hidden>
+        <h2>Audio 1 + intro + audio 2</h2>
+        <p>La intro configurada se insertará entre los dos archivos.</p>
+        <form class="merge-form" action="/merge" method="post" enctype="multipart/form-data">
+          <label for="before">Audio 1</label>
+          <input id="before" name="before" type="file" accept="audio/*,.mp4" required>
+          <label for="after">Audio 2</label>
+          <input id="after" name="after" type="file" accept="audio/*,.mp4" required>
+          <button type="submit">Unir y descargar</button>
+        </form>
+      </section>
+
+      <div id="status" class="status" role="status" aria-live="polite" hidden></div>
+    </article>
+
+    <footer>
+      <a href="/docs">Documentación de la API</a>
+    </footer>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

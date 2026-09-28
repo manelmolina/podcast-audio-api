@@ -1,0 +1,8 @@
+.git
+.gitignore
+.env
+token_github.txt
+podcast_jobs
+__pycache__
+*.py[cod]
+*.log
